@@ -1,0 +1,9 @@
+conf
+coverage
+src
+test
+node_modules
+.gitignore
+gulpfile.js
+tsconfig.json
+typings.json
