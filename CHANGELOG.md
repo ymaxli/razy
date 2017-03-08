@@ -6,3 +6,7 @@ basic framework
 
 + remove @types/immutable
 + add `typescript.definition` to `package.json`
+
+# 0.0.3
+
++ adjust the way of writing universal d.ts
