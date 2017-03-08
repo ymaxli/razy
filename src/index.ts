@@ -1,4 +1,5 @@
 import * as server from './server/server';
+import {DataFlagResolver} from './utils/request';
 export interface ParamsInterface {
     resultObjErrorConstructor?: (msg: string, code?: number) => any
     resultObjSuccessConstructor?: (data: any, code?: number) => any

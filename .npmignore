@@ -7,3 +7,4 @@ node_modules
 gulpfile.js
 tsconfig.json
 typings.json
+typings

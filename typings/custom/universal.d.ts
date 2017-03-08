@@ -1,25 +1,12 @@
 declare module NodeJS {
     interface Global {
-        _importLess: ImportLess
-        _http: REQUEST,
-        _https: REQUEST,
-        ret: RET
         [key: string]: any
     }
-}
-interface Window {
-    _http: REQUEST,
-    _https: REQUEST,
-    _storage: STORAGE,
-    ret: RET,
-    [key: string]: any
 }
 
 declare const _importLess: ImportLess;
 declare const _http: REQUEST;
 declare const _https: REQUEST;
-declare const ret: RET;
-declare const _storage: STORAGE;
 
 declare const __CROSSDOMAIN__: string;
 declare const __DIST_PATH__: string;

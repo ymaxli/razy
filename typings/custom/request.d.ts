@@ -1,17 +1,11 @@
-declare class Fetch extends REQUEST {
-    constructor(params: RequestParam, dataflagResolver?: DataFlagResolver)
-}
-declare class HTTP extends REQUEST {
-    constructor(params: RequestParam, dataflagResolver?: DataFlagResolver)
-}
-declare class HTTPS extends REQUEST {
-    constructor(params: RequestParam, dataflagResolver?: DataFlagResolver)
-}
-declare interface RequestParam {
+interface RequestParam {
     hostname: string,
     port: string,
     stubHostname: string,
     stubPort: string
+}
+interface DataFlagResolver {
+    (obj: any, resolve: Function, reject: Function): void
 }
 declare abstract class REQUEST {
     constructor(param: RequestParam, protocol: string, dataflagResolver?: DataFlagResolver)
@@ -35,7 +29,4 @@ declare abstract class REQUEST {
      * add global param when sending any kind of request
      */
     setParam(key: string, value: any): void
-}
-declare interface DataFlagResolver {
-    (obj: any, resolve: Function, reject: Function): void
 }

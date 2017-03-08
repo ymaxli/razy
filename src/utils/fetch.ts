@@ -6,6 +6,7 @@
 import * as URL from 'url';
 import REQUEST from './request';
 import * as querystring from 'query-string';
+import {RequestParam, DataFlagResolver} from './request';
 
 let _ajax: Fetch;
 

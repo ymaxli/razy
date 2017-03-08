@@ -7,7 +7,15 @@
  **/
 
 import * as URL from 'url';
-
+export interface DataFlagResolver {
+    (obj: any, resolve: Function, reject: Function): void
+} 
+export interface RequestParam {
+    hostname: string,
+    port: string,
+    stubHostname: string,
+    stubPort: string
+}
 abstract class REQUEST {
     protected hostname: string
     protected port: string

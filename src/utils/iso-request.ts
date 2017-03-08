@@ -3,7 +3,7 @@
  * @author Max
  */
 
-import REQUEST from './request';
+import {default as REQUEST, DataFlagResolver} from './request';
 
 export default function getRequestMethod(dataFlagResolver?: DataFlagResolver): {
     http: REQUEST,

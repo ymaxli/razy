@@ -8,6 +8,7 @@ import * as https from 'https';
 import * as querystring from 'querystring';
 import REQUEST from './request';
 import * as URL from 'url';
+import {RequestParam, DataFlagResolver} from './request';
 
 export class HTTP_PARENT extends REQUEST {
     private method: any
