@@ -2,9 +2,9 @@
   "name": "razy",
   "version": "0.0.1",
   "description": "a server framework running on Node.js based on React & Express for lazy developers like me :P",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
@@ -34,7 +34,6 @@
     "@types/express": "^4.0.35",
     "@types/express-session": "0.0.32",
     "@types/history": "^2.0.43",
-    "@types/immutable": "^3.8.7",
     "@types/js-cookie": "^2.0.28",
     "@types/lodash.clonedeep": "^4.5.1",
     "@types/lodash.findindex": "^4.6.1",
