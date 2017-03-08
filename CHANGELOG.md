@@ -10,3 +10,7 @@ basic framework
 # 0.0.3
 
 + adjust the way of writing universal d.ts
+
+# 0.0.4
+
++ add `typings` to `package.json`
