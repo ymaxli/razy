@@ -30,3 +30,7 @@ basic framework
 
 + fix init bug in `server/page/index.tsx`
 + fix `action === undefined` bug in `server/page/index.tsx`
+
+# 0.0.8
+
++ inject `deviceVars` to component props & export `DeviceVars` interface for client-side injection
