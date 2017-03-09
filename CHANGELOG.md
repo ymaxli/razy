@@ -14,3 +14,8 @@ basic framework
 # 0.0.4
 
 + add `typings` to `package.json`
+
+# 0.0.5
+
++ add utils immu-reselect
++ add utils validator
