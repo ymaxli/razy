@@ -19,3 +19,7 @@ basic framework
 
 + add utils immu-reselect
 + add utils validator
+
+# 0.0.6
+
++ export type `HTMLManager`
