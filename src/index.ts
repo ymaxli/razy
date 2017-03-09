@@ -22,3 +22,4 @@ export {default as createSelector} from './utils/immu-reselect';
 import * as Validator from './utils/validator';
 export {Validator};
 export {default as HTMLManager} from './server/bootstrap/html-manager';
+export {ret} from './utils/retina';
