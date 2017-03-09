@@ -23,3 +23,5 @@ basic framework
 # 0.0.6
 
 + export type `HTMLManager`
++ change `BaseComponent.getInitDataActionImp` return type to any
++ export utils retina
