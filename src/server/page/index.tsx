@@ -17,6 +17,7 @@ import { match, RouterContext } from 'react-router';
 import { getDeviceVars } from '../utils/device-detect';
 import { exportConfigToGlobalConst } from './utils';
 import { INITIAL_DATA_NAMESPACE } from '../../const';
+import {notEmptyValidator} from '../../utils/validator';
 
 const router = express.Router();
 
@@ -109,7 +110,7 @@ function loadInitialDataActions(renderProps: any, store: Store<any>) {
             let component = new item.WrappedComponent();
             // getInitDataAction
             let action = component.getInitDataAction(renderProps, true);
-            action !== null && initialDataActions.push(action);
+            notEmptyValidator(action) && initialDataActions.push(action);
         }
     });
 
