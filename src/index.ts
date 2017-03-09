@@ -19,3 +19,5 @@ export {createReducer} from './utils/reducer-utils';
 export {default as Storage} from './utils/storage';
 export {default as getRequestMethod} from './utils/iso-request';
 export {default as createSelector} from './utils/immu-reselect';
+import * as Validator from './utils/validator';
+export {Validator};

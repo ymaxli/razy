@@ -52,6 +52,7 @@
     "@types/redux": "^3.6.31",
     "@types/redux-actions": "^1.2.3",
     "@types/reselect": "^2.0.27",
+    "@types/validator": "^6.2.0",
     "body-parser": "^1.17.0",
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
@@ -73,6 +74,7 @@
     "react-router": "^3.0.2",
     "redux": "^3.6.0",
     "redux-actions": "^2.0.1",
-    "reselect": "^2.5.4"
+    "reselect": "^2.5.4",
+    "validator": "^7.0.0"
   }
 }

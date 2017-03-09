@@ -10,3 +10,4 @@ require('./case/server.utils.device-detect');
 require('./case/server.bootstrap.html-manager');
 require('./case/server.utils.json-result');
 require('./case/utils.action-utils');
+require('./case/utils.validator');
