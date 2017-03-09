@@ -25,3 +25,7 @@ basic framework
 + export type `HTMLManager`
 + change `BaseComponent.getInitDataActionImp` return type to any
 + export utils retina
+
+# 0.0.7
+
++ fix init bug in `server/page/index.tsx`
