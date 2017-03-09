@@ -29,3 +29,4 @@ basic framework
 # 0.0.7
 
 + fix init bug in `server/page/index.tsx`
++ fix `action === undefined` bug in `server/page/index.tsx`
