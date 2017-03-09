@@ -23,10 +23,10 @@ const router = express.Router();
 const TIMEOUT = 15 * 1000;
 
 let APP: any, routes: any, createStore: any;
-export function init(reducerRoot: any, routes: any, createStore: any) {
-    APP = reducerRoot;
-    routes = routes;
-    createStore = createStore;
+export function init(_reducerRoot: any, _routes: any, _createStore: any) {
+    APP = _reducerRoot;
+    routes = _routes;
+    createStore = _createStore;
 }
 
 const configJS = exportConfigToGlobalConst(vanillaConfigObj);
