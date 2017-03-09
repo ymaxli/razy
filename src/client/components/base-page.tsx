@@ -30,7 +30,7 @@ abstract class BaseComponent<P extends BasePropTypes, S> extends React.Component
      * implement initializing page data,
      * isomorphic method
      */
-    abstract getInitDataActionImp(props: any): {}
+    abstract getInitDataActionImp(props: any): any
     getInitDataAction(props: any, force = false) {
         if(force || !props.dataInited) {
             return this.getInitDataActionImp(props);
