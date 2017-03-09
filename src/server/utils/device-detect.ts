@@ -4,8 +4,14 @@
  */
 
 import MobileDetect = require('mobile-detect');
+export interface DeviceVars {
+    __PHONE__: boolean,
+    __TABLET__: boolean,
+    __MOBILE__: boolean,
+    __OS__: string
+};
 
-export function getDeviceVars(userAgent: string) {
+export function getDeviceVars(userAgent: string): DeviceVars {
     const md = new MobileDetect(userAgent);
     
     return {

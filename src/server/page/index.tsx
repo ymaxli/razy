@@ -14,10 +14,10 @@ import * as Immutable from 'immutable';
 import HTMLManager from '../bootstrap/html-manager';
 import { Provider } from 'react-redux';
 import { match, RouterContext } from 'react-router';
-import { getDeviceVars } from '../utils/device-detect';
+import { getDeviceVars, DeviceVars } from '../utils/device-detect';
 import { exportConfigToGlobalConst } from './utils';
 import { INITIAL_DATA_NAMESPACE } from '../../const';
-import {notEmptyValidator} from '../../utils/validator';
+import { notEmptyValidator } from '../../utils/validator';
 
 const router = express.Router();
 
@@ -117,12 +117,19 @@ function loadInitialDataActions(renderProps: any, store: Store<any>) {
     return initialDataActions.map(item => store.dispatch(item));
 }
 
-function generateClientGlobalVar(userAgent: string, storeState: any) {
+function generateClientGlobalVar(deviceVars: DeviceVars, storeState: any) {
     let thisGlobalVars: any = cloneDeep(configJS);
-    const deviceVars = getDeviceVars(userAgent);
     Object.assign(thisGlobalVars, deviceVars);
     thisGlobalVars.__INITIAL_STATE__ = encodeURIComponent(JSON.stringify(storeState));
     return thisGlobalVars;
+}
+
+function getCreateElement(deviceVars: DeviceVars) {
+    return (Component: any, props: any) => {
+        let newProps = props;
+        Object.assign(newProps, deviceVars);
+        return React.createElement(Component, newProps);
+    };
 }
 
 async function render(
@@ -135,12 +142,14 @@ async function render(
     renderProps: any) {
     await Promise.all(asyncTasks);
 
-    htmlManager.injectGlobalVar(generateClientGlobalVar(req.headers['user-agent'], store.getState()));
+    const deviceVars = getDeviceVars(req.headers['user-agent']);
+
+    htmlManager.injectGlobalVar(generateClientGlobalVar(deviceVars, store.getState()));
 
     let html: string;
     html = ReactDOMServer.renderToString(
         <Provider store={store}>
-            <RouterContext {...renderProps} />
+            <RouterContext {...renderProps} createElement={getCreateElement(deviceVars)}/>
         </Provider>
     );
 
