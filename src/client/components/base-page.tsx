@@ -8,17 +8,18 @@ import * as Immutable from 'immutable';
 import * as express from 'express';
 import HTMLManager from '../../server/bootstrap/html-manager';
 const htmlManager = new HTMLManager();
+import {DeviceVars} from '../../server/utils/device-detect';
 
-export interface BasePropTypes{
-    dispatch?: Function,
-    params?: any,
-    location?: {
+export interface BasePropTypes {
+    dispatch: Function,
+    params: any,
+    location: {
         search: string
     }
 }
 
-abstract class BaseComponent<P extends BasePropTypes, S> extends React.Component<P, S> {
-    constructor(props: P) {
+abstract class BaseComponent<P, S> extends React.Component<P & BasePropTypes & DeviceVars, S> {
+    constructor(props: any) {
         super(props);
     }
     /**
@@ -39,7 +40,6 @@ abstract class BaseComponent<P extends BasePropTypes, S> extends React.Component
     }
     componentDidMount() {
         this.setUpPage(htmlManager);
-        
         const {dispatch} = this.props;
         let action = this.getInitDataAction(this.props);
         if(action !== null) {

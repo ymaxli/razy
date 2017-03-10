@@ -5,19 +5,19 @@
 
 import MobileDetect = require('mobile-detect');
 export interface DeviceVars {
-    __PHONE__: boolean,
-    __TABLET__: boolean,
-    __MOBILE__: boolean,
-    __OS__: string
+    device_phone: boolean,
+    device_tablet: boolean,
+    device_mobile: boolean,
+    device_os: string
 };
 
 export function getDeviceVars(userAgent: string): DeviceVars {
     const md = new MobileDetect(userAgent);
     
     return {
-        __PHONE__: md.phone() !== null,
-        __TABLET__: md.tablet() !== null,
-        __MOBILE__: md.mobile() !== null,
-        __OS__: md.os()
+        device_phone: md.phone() !== null,
+        device_tablet: md.tablet() !== null,
+        device_mobile: md.mobile() !== null,
+        device_os: md.os()
     };
 };
