@@ -34,3 +34,8 @@ basic framework
 # 0.0.8
 
 + inject `deviceVars` to component props & export `DeviceVars` interface for client-side injection
+
+# 0.0.9
+
++ redefine `DeviceVars` interface
++ add `DeviceVars` interface to `BaseComponent.PropTypes`
