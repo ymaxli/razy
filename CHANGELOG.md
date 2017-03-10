@@ -39,3 +39,7 @@ basic framework
 
 + redefine `DeviceVars` interface
 + add `DeviceVars` interface to `BaseComponent.PropTypes`
+
+# 0.0.10
+
++ split export file into server and client
