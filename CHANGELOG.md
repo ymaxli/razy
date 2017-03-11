@@ -43,3 +43,7 @@ basic framework
 # 0.0.10
 
 + split export file into server and client
+
+# 0.0.11
+
++ add `BaseStateTypes` interface to `BaseComponent.StateTypes`
