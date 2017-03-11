@@ -47,3 +47,4 @@ basic framework
 # 0.0.11
 
 + add `BaseStateTypes` interface to `BaseComponent.StateTypes`
++ fix `getInitDataAction` calling condition bug
