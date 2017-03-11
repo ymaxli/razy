@@ -47,9 +47,8 @@ abstract class BaseComponent<P, S> extends React.Component<P & BasePropTypes & D
         this.setUpPage(htmlManager);
         const {dispatch} = this.props;
         let action = this.getInitDataAction(this.props);
-        if(action !== null) {
-            dispatch(action);
-        }
+        action && dispatch(action);
+
         this.setState({
             client: true,
             bodyHeight: window.innerHeight
