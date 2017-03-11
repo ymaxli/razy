@@ -18,7 +18,12 @@ export interface BasePropTypes {
     }
 }
 
-abstract class BaseComponent<P, S> extends React.Component<P & BasePropTypes & DeviceVars, S> {
+export interface BaseStateTypes {
+    client?: boolean,
+    bodyHeight?: number
+}
+
+abstract class BaseComponent<P, S> extends React.Component<P & BasePropTypes & DeviceVars, S & BaseStateTypes> {
     constructor(props: any) {
         super(props);
     }
@@ -45,6 +50,10 @@ abstract class BaseComponent<P, S> extends React.Component<P & BasePropTypes & D
         if(action !== null) {
             dispatch(action);
         }
+        this.setState({
+            client: true,
+            bodyHeight: window.innerHeight
+        });
     }
 }
 
