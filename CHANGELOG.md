@@ -48,3 +48,4 @@ basic framework
 
 + add `BaseStateTypes` interface to `BaseComponent.StateTypes`
 + fix `getInitDataAction` calling condition bug
++ fix `html-manager` crashing on client side
