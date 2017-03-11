@@ -157,6 +157,24 @@ describe('server.bootstrap.html-manager', function() {
         expect(a.TAG_TYPE.STYLE).to.be(1);
         expect(a.TAG_TYPE.META).to.be(2);
     });
+    it('client side compatibility', function() {
+        global.window = {};
+        let a = new HTMLManager();
+
+        try {
+            a.addCDNFailSafe();
+            a.getHead();
+            a.getFoot();
+            a.removeTag();
+            a.setTag();
+            a.getTag();
+            a.injectGlobalVar();
+            a.appendTagAfter();
+            a.prependTagBefore();
+        } catch(e) {
+            expect().fail();
+        }
+    });
 });
 
     

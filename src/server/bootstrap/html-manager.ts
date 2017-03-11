@@ -46,6 +46,8 @@ export default class HTMLManager {
         }
     }
     addCDNFailSafe(globalVar: string, path: string) {
+        if(typeof window !== 'undefined') return;
+
         this.CDNFailSafe.push({
             key: globalVar,
             value: path
@@ -57,6 +59,8 @@ export default class HTMLManager {
         }, TAG_TYPE.SCRIPT);
     }
     getHead() {
+        if(typeof window !== 'undefined') return;
+        
         let result = reduce(this.head, (sum: string, item: KeyPair) => {
             return sum + item.value;
         }, '');
@@ -64,6 +68,8 @@ export default class HTMLManager {
         return result;
     }
     getFoot() {
+        if(typeof window !== 'undefined') return;
+        
         let result = reduce(this.foot, (sum: string, item: KeyPair) => {
             return sum + item.value;
         }, '');
@@ -71,6 +77,8 @@ export default class HTMLManager {
         return result;
     }
     removeTag(key: string) {
+        if(typeof window !== 'undefined') return;
+        
         remove(this.head, (item: KeyPair) => {
             return item.key === key;
         });
@@ -79,6 +87,8 @@ export default class HTMLManager {
         });
     }
     setTag(key: string, value: string) {
+        if(typeof window !== 'undefined') return;
+        
         let index = this.findIndex(key);
 
         let obj = this.head[index] || this.foot[index - this.head.length];
@@ -87,6 +97,8 @@ export default class HTMLManager {
         }
     }
     getTag(key: string) {
+        if(typeof window !== 'undefined') return;
+        
         let index = this.findIndex(key);
 
         let obj = this.head[index] || this.foot[index - this.head.length];
@@ -94,6 +106,8 @@ export default class HTMLManager {
         return result;
     }
     injectGlobalVar(obj: any) {
+        if(typeof window !== 'undefined') return;
+        
         let index = this.findIndex('headTagOpen');
         let tag = '<script type="text/javascript">\n';
         for(let i in obj) {
@@ -111,6 +125,8 @@ export default class HTMLManager {
         });
     }
     appendTagAfter(key: string, tagKey: string, valueObj: InsertValueObj, tagType: TAG_TYPE) {
+        if(typeof window !== 'undefined') return;
+        
         let index = this.keyCheck(key, tagKey);
         let tag = this.generateTag(valueObj, tagType);
 
@@ -127,6 +143,8 @@ export default class HTMLManager {
         }
     }
     prependTagBefore(key: string, tagKey: string, valueObj: InsertValueObj, tagType: TAG_TYPE) {
+        if(typeof window !== 'undefined') return;
+        
         let index = this.keyCheck(key, tagKey);
         let tag = this.generateTag(valueObj, tagType);
 
