@@ -13,6 +13,8 @@ import {ParamsInterface} from '../index'
 import * as jr from './utils/json-result';
 import {default as Page, init as pageInit} from './page';
 import * as env from './utils/env-detect';
+import {extend as promiseExtend} from '../utils/promise-extension';
+promiseExtend();
 
 import {importFile} from './utils/less-loader';
 global._importLess = importFile;

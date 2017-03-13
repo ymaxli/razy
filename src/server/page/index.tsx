@@ -69,20 +69,17 @@ router.all('*', function (req, res, next) {
                             res.setHeader('Content-Type', 'text/html');
                             res.send(html);
                             res.end();
-
-                            timeoutFlag = false;
-                            clearTimeout(timeoutIndex);
                         }).catch(err => {
                             next(err);
-
-                            timeoutFlag = false;
-                            clearTimeout(timeoutIndex);
                         });
                 })
                 .catch((err: Error) => {
                     if(err.message === 'redirected') {
                         res.end();
                     } else next(err);
+                }).finally(() => {
+                    timeoutFlag = false;
+                    clearTimeout(timeoutIndex);
                 });
         }
     });
