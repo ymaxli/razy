@@ -31,9 +31,7 @@ abstract class BaseComponent<P, S> extends React.Component<P & BasePropTypes & D
     /**
      * interceptor for server side control
      */
-    async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> {
-        return null;
-    }
+    abstract async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any>
     /**
      * implement page initialization stuff,
      * isomorphic method

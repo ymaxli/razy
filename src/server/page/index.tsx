@@ -80,7 +80,9 @@ router.all('*', function (req, res, next) {
                         });
                 })
                 .catch((err: Error) => {
-                    res.end();
+                    if(err.message === 'redirected') {
+                        res.end();
+                    } else next(err);
                 });
         }
     });
@@ -89,22 +91,12 @@ router.all('*', function (req, res, next) {
 async function execInterceptors(renderProps: any, req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> {
     let interceptors: Promise<any>[] = [];
 
-    renderProps.components.forEach((item: { WrappedComponent: any }) => {
+    for(let item of renderProps.components) {
         if (item && item.WrappedComponent) {
             let component = new item.WrappedComponent();
-            let interceptor = component.interceptor(req, res, next);
-            notEmptyValidator(interceptor) && interceptors.push(interceptor);
+            await component.interceptor(req, res, next);
         }
-    });
-
-    try {
-        for (let i in interceptors) {
-            await i;
-        }
-    } catch(e) {
-        console.error(e);
-        if(e.message === 'redirected') throw e;
-    };
+    }
 }
 
 function generateStore(initialDataFromClient: any) {

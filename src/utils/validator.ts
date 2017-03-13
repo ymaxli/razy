@@ -8,6 +8,9 @@ import isInt = require('validator/lib/isInt');
 import isFloat = require('validator/lib/isFloat');
 import isURL = require('validator/lib/isURL');
 
+/**
+ * only for basic types
+ */
 export const notEmptyValidator = (value: any) => value !== '' &&
                                           value !== undefined &&
                                           value !== null &&
