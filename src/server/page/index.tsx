@@ -125,8 +125,8 @@ function loadInitialDataActions(renderProps: any, store: Store<any>): Promise<an
         if (item && item.WrappedComponent) {
             let component = new item.WrappedComponent();
             // getInitDataAction
-            let action = component.getInitDataAction(renderProps, true);
-            notEmptyValidator(action) && initialDataActions.push(action);
+            let actions = component.getInitDataAction(renderProps, true);
+            notEmptyValidator(actions) && initialDataActions.concat(actions);
         }
     });
 

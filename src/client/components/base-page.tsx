@@ -41,24 +41,29 @@ abstract class BaseComponent<P, S> extends React.Component<P & BasePropTypes & D
      * implement initializing page data,
      * isomorphic method
      */
-    abstract getInitDataActionImp(props: any): any
-    getInitDataAction(props: any, force = false) {
+    abstract getInitDataActionImp(props: any): void | any[]
+    getInitDataAction(props: any, force = false): any[] {
         if(force || !props.dataInited) {
-            return this.getInitDataActionImp(props);
+            let actions = this.getInitDataActionImp(props);
+            if(isAnyArray(actions)) return actions;
         }
         return null;
     }
     componentDidMount() {
         this.setUpPage(htmlManager);
         const {dispatch} = this.props;
-        let action = this.getInitDataAction(this.props);
-        action && dispatch(action);
+        let actions = this.getInitDataAction(this.props);
+        if(actions) actions.forEach(item => dispatch(item));
 
         this.setState({
             client: true,
             bodyHeight: window.innerHeight
         });
     }
+}
+
+function isAnyArray(array: void | any[]): array is any[] {
+    return array !== undefined;
 }
 
 export default BaseComponent;

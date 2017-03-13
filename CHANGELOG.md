@@ -57,3 +57,8 @@ basic framework
 # 0.0.13
 
 + add `finally` method to `Promise`
++ fix `storage` vanilla `set` and `get` bug
+
+# 0.0.14
+
++ support `getInitDataAction` return multiple actions
