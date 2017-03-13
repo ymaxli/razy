@@ -53,32 +53,56 @@ router.all('*', function (req, res, next) {
         } else if (renderProps === undefined) {
             res.status(404).send('Not found');
         } else {
-            let htmlManager = new HTMLManager();
+            execInterceptors(renderProps, req, res, next)
+                .then(() => {
+                    let htmlManager = new HTMLManager();
 
-            setUpPage(renderProps, htmlManager);
+                    setUpPage(renderProps, htmlManager);
 
-            let store = generateStore(req.cookies[INITIAL_DATA_NAMESPACE]);
+                    let store = generateStore(req.cookies[INITIAL_DATA_NAMESPACE]);
 
-            let asyncTasks: Promise<any>[] = [];
-            asyncTasks.concat(loadInitialDataActions(renderProps, store))
+                    let asyncTasks: Promise<any>[] = [];
+                    asyncTasks.concat(loadInitialDataActions(renderProps, store))
 
-            render(req, res, next, htmlManager, store, asyncTasks, renderProps)
-                .then(html => {
-                    res.setHeader('Content-Type', 'text/html');
-                    res.send(html);
-                    res.end();
+                    render(req, res, next, htmlManager, store, asyncTasks, renderProps)
+                        .then(html => {
+                            res.setHeader('Content-Type', 'text/html');
+                            res.send(html);
+                            res.end();
 
-                    timeoutFlag = false;
-                    clearTimeout(timeoutIndex);
-                }).catch(err => {
-                    next(err);
+                            timeoutFlag = false;
+                            clearTimeout(timeoutIndex);
+                        }).catch(err => {
+                            next(err);
 
-                    timeoutFlag = false;
-                    clearTimeout(timeoutIndex);
+                            timeoutFlag = false;
+                            clearTimeout(timeoutIndex);
+                        });
+                })
+                .catch((err: Error) => {
+                    if(err.message === 'redirected') {
+                        res.end();
+                    }
                 });
         }
     });
 });
+
+async function execInterceptors(renderProps: any, req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> {
+    let interceptors: Promise<any>[] = [];
+
+    renderProps.components.forEach((item: { WrappedComponent: any }) => {
+        if (item && item.WrappedComponent) {
+            let component = new item.WrappedComponent();
+            let interceptor = component.interceptor(req, res, next);
+            notEmptyValidator(interceptor) && interceptors.push(interceptor);
+        }
+    });
+
+    for (let i in interceptors) {
+        await i;
+    }
+}
 
 function generateStore(initialDataFromClient: any) {
     let initialStateImmutable: any = {};
@@ -93,7 +117,7 @@ function generateStore(initialDataFromClient: any) {
 }
 
 function setUpPage(renderProps: any, htmlManager: HTMLManager) {
-    renderProps.components.map((item: { WrappedComponent: any }) => {
+    renderProps.components.forEach((item: { WrappedComponent: any }) => {
         if (item && item.WrappedComponent) {
             let component = new item.WrappedComponent();
             // setUpPage
@@ -102,10 +126,10 @@ function setUpPage(renderProps: any, htmlManager: HTMLManager) {
     });
 }
 
-function loadInitialDataActions(renderProps: any, store: Store<any>) {
+function loadInitialDataActions(renderProps: any, store: Store<any>): Promise<any>[] {
     let initialDataActions: any[] = [];
 
-    renderProps.components.map((item: { WrappedComponent: any }) => {
+    renderProps.components.forEach((item: { WrappedComponent: any }) => {
         if (item && item.WrappedComponent) {
             let component = new item.WrappedComponent();
             // getInitDataAction
@@ -149,7 +173,7 @@ async function render(
     let html: string;
     html = ReactDOMServer.renderToString(
         <Provider store={store}>
-            <RouterContext {...renderProps} createElement={getCreateElement(deviceVars)}/>
+            <RouterContext {...renderProps} createElement={getCreateElement(deviceVars)} />
         </Provider>
     );
 

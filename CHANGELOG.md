@@ -49,3 +49,7 @@ basic framework
 + add `BaseStateTypes` interface to `BaseComponent.StateTypes`
 + fix `getInitDataAction` calling condition bug
 + fix `html-manager` crashing on client side
+
+# 0.0.12
+
++ add `interceptor` to `BaseComponent` to allow server side control inside components

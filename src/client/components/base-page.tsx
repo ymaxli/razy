@@ -3,6 +3,7 @@
  * @author Max
  */
 
+import * as _expressStatic from 'express-serve-static-core';
 import * as React from 'react';
 import * as Immutable from 'immutable';
 import * as express from 'express';
@@ -26,6 +27,12 @@ export interface BaseStateTypes {
 abstract class BaseComponent<P, S> extends React.Component<P & BasePropTypes & DeviceVars, S & BaseStateTypes> {
     constructor(props: any) {
         super(props);
+    }
+    /**
+     * interceptor for server side control
+     */
+    async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> {
+        return null;
     }
     /**
      * implement page initialization stuff,
