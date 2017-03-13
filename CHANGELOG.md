@@ -53,3 +53,7 @@ basic framework
 # 0.0.12
 
 + add `interceptor` to `BaseComponent` to allow server side control inside components
+
+# 0.0.13
+
++ add `finally` method to `Promise`
