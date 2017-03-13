@@ -80,9 +80,7 @@ router.all('*', function (req, res, next) {
                         });
                 })
                 .catch((err: Error) => {
-                    if(err.message === 'redirected') {
-                        res.end();
-                    }
+                    res.end();
                 });
         }
     });
@@ -99,9 +97,14 @@ async function execInterceptors(renderProps: any, req: _expressStatic.Request, r
         }
     });
 
-    for (let i in interceptors) {
-        await i;
-    }
+    try {
+        for (let i in interceptors) {
+            await i;
+        }
+    } catch(e) {
+        console.error(e);
+        if(e.message === 'redirected') throw e;
+    };
 }
 
 function generateStore(initialDataFromClient: any) {
