@@ -28,7 +28,7 @@ global.ret = ret;
 
 const app = express();
 
-export function start(params: ParamsInterface) {
+export function start(params: ParamsInterface, interceptor?: (app: express.Express) => void) {
     const requestMethods = getRequestMethod(params.dataFlagResolver);
     global._http = requestMethods.http;
     global._https = requestMethods.https;
@@ -64,6 +64,9 @@ export function start(params: ParamsInterface) {
         const StubMiddleware = require('./stub');
         app.use('/stub', StubMiddleware.router);
     }
+
+    // interceptor
+    if(interceptor) interceptor(app);
 
     // page
     app.use('/', Page);
