@@ -53,28 +53,9 @@ router.all('*', function (req, res, next) {
         } else if (renderProps === undefined) {
             res.status(404).send('Not found');
         } else {
-            execInterceptors(renderProps, req, res, next)
-                .then(() => {
-                    let htmlManager = new HTMLManager();
-
-                    setUpPage(renderProps, htmlManager);
-
-                    let store = generateStore(req.cookies[INITIAL_DATA_NAMESPACE]);
-
-                    let asyncTasks: Promise<any>[] = [];
-                    asyncTasks.concat(loadInitialDataActions(renderProps, store))
-
-                    render(req, res, next, htmlManager, store, asyncTasks, renderProps)
-                        .then(html => {
-                            res.setHeader('Content-Type', 'text/html');
-                            res.send(html);
-                            res.end();
-                        }).catch(err => {
-                            next(err);
-                        });
-                })
+            render(req, res, next, renderProps)
                 .catch((err: Error) => {
-                    if(err.message === 'redirected') {
+                    if (err.message === 'redirected') {
                         res.end();
                     } else next(err);
                 }).finally(() => {
@@ -85,10 +66,63 @@ router.all('*', function (req, res, next) {
     });
 });
 
-async function execInterceptors(renderProps: any, req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> {
+async function render(
+    req: _expressStatic.Request,
+    res: _expressStatic.Response,
+    next: _expressStatic.NextFunction,
+    renderProps: any) {
+    // interceptor
+    await execInterceptors(renderProps.components, req, res, next);
+
+    // initial data actions and set up pages
+    let htmlManager = new HTMLManager();
+    let store = generateStore(req.cookies[INITIAL_DATA_NAMESPACE]);
+    let initialDataAndSetUpTasks: Promise<any>[] = [];
+    renderProps.components.forEach((item: { WrappedComponent: any }) => {
+        if (item && item.WrappedComponent) {
+            let component = new item.WrappedComponent();
+            
+            let actions = component.getInitDataAction(renderProps, true);
+            if(notEmptyValidator(actions)) {
+                initialDataAndSetUpTasks.push(new Promise((resolve, reject) => {
+                    Promise.all(actions.map((item: any) => store.dispatch(item)))
+                        .then((datas: any[]) => {
+                            component.setUpPage(htmlManager, datas.map(data => data.payload));
+                            resolve();
+                        }).catch(reject);
+                }));
+            } else {
+                initialDataAndSetUpTasks.push(new Promise((resolve, reject) => {
+                    component.setUpPage(htmlManager);
+                    resolve();
+                }));
+            }
+        }
+    });
+    await Promise.all(initialDataAndSetUpTasks);
+
+    // get deviceVars
+    const deviceVars = getDeviceVars(req.headers['user-agent']);
+    htmlManager.injectGlobalVar(generateClientGlobalVar(deviceVars, store.getState()));
+
+    // render
+    let html: string;
+    html = ReactDOMServer.renderToString(
+        <Provider store={store}>
+            <RouterContext {...renderProps} createElement={getCreateElement(deviceVars)} />
+        </Provider>
+    );
+    html = htmlManager.getHead() + (html || '') + htmlManager.getFoot();
+
+    res.setHeader('Content-Type', 'text/html');
+    res.send(html);
+    res.end();
+}
+
+async function execInterceptors(components: any, req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> {
     let interceptors: Promise<any>[] = [];
 
-    for(let item of renderProps.components) {
+    for (let item of components) {
         if (item && item.WrappedComponent) {
             let component = new item.WrappedComponent();
             await component.interceptor(req, res, next);
@@ -108,31 +142,6 @@ function generateStore(initialDataFromClient: any) {
     return createStore(APP, initialStateImmutable);
 }
 
-function setUpPage(renderProps: any, htmlManager: HTMLManager) {
-    renderProps.components.forEach((item: { WrappedComponent: any }) => {
-        if (item && item.WrappedComponent) {
-            let component = new item.WrappedComponent();
-            // setUpPage
-            component.setUpPage(htmlManager);
-        }
-    });
-}
-
-function loadInitialDataActions(renderProps: any, store: Store<any>): Promise<any>[] {
-    let initialDataActions: any[] = [];
-
-    renderProps.components.forEach((item: { WrappedComponent: any }) => {
-        if (item && item.WrappedComponent) {
-            let component = new item.WrappedComponent();
-            // getInitDataAction
-            let actions = component.getInitDataAction(renderProps, true);
-            notEmptyValidator(actions) && initialDataActions.concat(actions);
-        }
-    });
-
-    return initialDataActions.map(item => store.dispatch(item));
-}
-
 function generateClientGlobalVar(deviceVars: DeviceVars, storeState: any) {
     let thisGlobalVars: any = cloneDeep(configJS);
     Object.assign(thisGlobalVars, deviceVars);
@@ -146,32 +155,6 @@ function getCreateElement(deviceVars: DeviceVars) {
         Object.assign(newProps, deviceVars);
         return React.createElement(Component, newProps);
     };
-}
-
-async function render(
-    req: _expressStatic.Request,
-    res: _expressStatic.Response,
-    next: _expressStatic.NextFunction,
-    htmlManager: HTMLManager,
-    store: any,
-    asyncTasks: Promise<any>[],
-    renderProps: any) {
-    await Promise.all(asyncTasks);
-
-    const deviceVars = getDeviceVars(req.headers['user-agent']);
-
-    htmlManager.injectGlobalVar(generateClientGlobalVar(deviceVars, store.getState()));
-
-    let html: string;
-    html = ReactDOMServer.renderToString(
-        <Provider store={store}>
-            <RouterContext {...renderProps} createElement={getCreateElement(deviceVars)} />
-        </Provider>
-    );
-
-    html = htmlManager.getHead() + (html || '') + htmlManager.getFoot();
-
-    return html;
 }
 
 export default router;

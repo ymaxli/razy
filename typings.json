@@ -1,3 +1,5 @@
 {
-  "dependencies": {}
+  "dependencies": {
+    "redux-promise": "registry:dt/redux-promise#0.5.3+20160921154131"
+  }
 }

@@ -10,6 +10,7 @@ import * as express from 'express';
 import HTMLManager from '../../server/bootstrap/html-manager';
 const htmlManager = new HTMLManager();
 import {DeviceVars} from '../../server/utils/device-detect';
+import { Store } from 'redux';
 
 export interface BasePropTypes {
     dispatch: Function,
@@ -36,7 +37,7 @@ abstract class BaseComponent<P, S> extends React.Component<P & BasePropTypes & D
      * implement page initialization stuff,
      * isomorphic method
      */
-    abstract setUpPage(manager: HTMLManager): any
+    abstract setUpPage(manager: HTMLManager, datas?: any[]): any
     /**
      * implement initializing page data,
      * isomorphic method
@@ -50,15 +51,22 @@ abstract class BaseComponent<P, S> extends React.Component<P & BasePropTypes & D
         return null;
     }
     componentDidMount() {
-        this.setUpPage(htmlManager);
-        const {dispatch} = this.props;
-        let actions = this.getInitDataAction(this.props);
-        if(actions) actions.forEach(item => dispatch(item));
-
         this.setState({
             client: true,
             bodyHeight: window.innerHeight
         });
+
+        const {dispatch} = this.props;
+        let actions = this.getInitDataAction(this.props);
+        if(actions) {
+            Promise.all(actions.map(item => dispatch(item)))
+                .then((datas: any[]) => {
+                    this.setUpPage(htmlManager, datas);
+                })
+                .catch(err => console.error(err));
+        } else {
+            this.setUpPage(htmlManager);
+        }
     }
 }
 

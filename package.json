@@ -8,7 +8,7 @@
   },
   "typings": "dist/index.d.ts",
   "scripts": {
-    "test": "mocha -r intelli-espower-loader test/spec.js"
+    "test": "mocha -r intelli-espower-loader test/spec.js && mocha -r intelli-espower-loader dist-test/case/page-render/index.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,7 @@
     "merge2": "^1.0.3",
     "mocha": "^3.2.0",
     "power-assert": "^1.4.2",
+    "redux-promise": "^0.5.3",
     "typescript": "^2.2.1"
   },
   "dependencies": {
