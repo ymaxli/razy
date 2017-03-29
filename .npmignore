@@ -8,3 +8,4 @@ gulpfile.js
 tsconfig.json
 typings.json
 typings
+dist-test

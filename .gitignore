@@ -45,6 +45,7 @@ node_modules
 
 # custom
 dist
+dist-test
 typings/globals
 typings/modules
 typings/index.d.ts

@@ -63,3 +63,8 @@ basic framework
 
 + support `getInitDataAction` return multiple actions
 + add `interceptor` to server
+
+# 0.1.0
+
++ change `expect.js` to `power-assert`
++ adjust page render sequence and add a test case
