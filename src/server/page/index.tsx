@@ -57,7 +57,11 @@ router.all('*', function (req, res, next) {
                 .catch((err: Error) => {
                     if (err.message === 'redirected') {
                         res.end();
-                    } else next(err);
+                    } else {
+                        console.error(err);
+                        console.error(err.stack);
+                        next(err);
+                    }
                 }).finally(() => {
                     timeoutFlag = false;
                     clearTimeout(timeoutIndex);
@@ -87,7 +91,7 @@ async function render(
                 initialDataAndSetUpTasks.push(new Promise((resolve, reject) => {
                     Promise.all(actions.map((item: any) => store.dispatch(item)))
                         .then((datas: any[]) => {
-                            component.setUpPage(htmlManager, datas.map(data => data.payload));
+                            component.setUpPage(htmlManager, datas);
                             resolve();
                         }).catch(reject);
                 }));
