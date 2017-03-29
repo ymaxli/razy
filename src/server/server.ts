@@ -73,4 +73,5 @@ export function start(params: ParamsInterface, interceptor?: (app: express.Expre
 
     app.listen(__PORT__);
     console.log(`listen to ${__PORT__}`);
+    console.log(`server start complete`);
 }
