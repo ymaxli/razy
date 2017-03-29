@@ -3,11 +3,11 @@
  * @author Max
  **/
 
-let expect = require('expect.js');
-let PageUtils = require('../../dist/server/page/utils');
-let exportConfigToGlobalConst = PageUtils.exportConfigToGlobalConst;
+const assert = require('assert');
+const PageUtils = require('../../dist/server/page/utils');
+const exportConfigToGlobalConst = PageUtils.exportConfigToGlobalConst;
 
-let testObj = {
+const testObj = {
     'A': 1,
     'B': {
         "C": '222',
@@ -24,10 +24,10 @@ let testObj = {
 describe('server.page', function() {
     it('normal', function() {
         let result = exportConfigToGlobalConst(testObj);
-        expect(result.__A__).to.be(1);
-        expect(result.__B_C__).to.be('222');
-        expect(result['__B_@D__']).to.be(undefined);
-        expect(result.__B_E_F__).to.be(1);
-        expect(result['__@C_K__']).to.be(undefined);
+        assert(result.__A__ === 1);
+        assert(result.__B_C__ === '222');
+        assert(result['__B_@D__'] === undefined);
+        assert(result.__B_E_F__ === 1);
+        assert(result['__@C_K__'] === undefined);
     });
 });

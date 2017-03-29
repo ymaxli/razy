@@ -3,25 +3,25 @@
  * @author Max
  **/
 
-let expect = require('expect.js');
-let JsonResult = require('../../dist/server/utils/json-result');
+const assert = require('assert');
+const JsonResult = require('../../dist/server/utils/json-result');
 
 describe('server.utils.json-result', function() {
     it('default', function() {
         JsonResult.init();
         let errorObj = JsonResult.error('111');
-        expect(errorObj).to.eql({code: 1, msg: '111'});
+        assert.deepEqual(errorObj, {code: 1, msg: '111'});
 
         let successObj = JsonResult.success({a:1});
-        expect(successObj).to.eql({code: 0, data: {a: 1}});
+        assert.deepEqual(successObj, {code: 0, data: {a: 1}});
     });
     it('pass code', function() {
         JsonResult.init();
         let errorObj = JsonResult.error('111', 100);
-        expect(errorObj).to.eql({code: 100, msg: '111'});
+        assert.deepEqual(errorObj, {code: 100, msg: '111'});
 
         let successObj = JsonResult.success({a:1}, 201);
-        expect(successObj).to.eql({code: 201, data: {a: 1}});
+        assert.deepEqual(successObj, {code: 201, data: {a: 1}});
     });
     it('customize', function() {
         JsonResult.init({
@@ -40,9 +40,9 @@ describe('server.utils.json-result', function() {
         });
 
         let errorObj = JsonResult.error('111', 100);
-        expect(errorObj).to.eql({result_code: 100, message: '111'});
+        assert.deepEqual(errorObj, {result_code: 100, message: '111'});
 
         let successObj = JsonResult.success({a:1}, 201);
-        expect(successObj).to.eql({result_code: 201, content: {a: 1}});
+        assert.deepEqual(successObj, {result_code: 201, content: {a: 1}});
     });
 });

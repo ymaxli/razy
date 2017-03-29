@@ -3,9 +3,9 @@
  * @author Max
  **/
 
-let expect = require('expect.js');
-let Stub = require('../../dist/server/stub');
-let handleStubReq = Stub.handleStubReq;
+const assert = require('assert');
+const Stub = require('../../dist/server/stub');
+const handleStubReq = Stub.handleStubReq;
 
 describe('server.stub', function() {
     before(function() {
@@ -13,7 +13,7 @@ describe('server.stub', function() {
     });
     it('normal', function() {
         let content = handleStubReq('/a/b/c');
-        expect(content).to.eql({
+        assert.deepEqual(content, {
             "code": 0,
             "data": {
                 "a": 123
@@ -22,7 +22,7 @@ describe('server.stub', function() {
     });
     it('not found', function() {
         let content = handleStubReq('/a/b');
-        expect(content).to.eql({
+        assert.deepEqual(content, {
             "code": 1,
             "msg": '404 Not Found'
         });

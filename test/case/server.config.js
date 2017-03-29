@@ -3,11 +3,11 @@
  * @author Max
  **/
 
-let expect = require('expect.js');
-let ConfigUtils = require('../../dist/server/config/utils');
-let injectConfVariable = ConfigUtils.injectConfVariable;
+const assert = require('assert');
+const ConfigUtils = require('../../dist/server/config/utils');
+const injectConfVariable = ConfigUtils.injectConfVariable;
 
-let testObj = {
+const testObj = {
     'A': 1,
     'B': {
         "C": '222',
@@ -24,10 +24,10 @@ let testObj = {
 describe('server.config', function() {
     it('normal', function() {
         injectConfVariable(testObj);
-        expect(__A__).to.be(1);
-        expect(__B_C__).to.be('222');
-        expect(__B_D__).to.be(5);
-        expect(__B_E_F__).to.be(1);
-        expect(__C_K__).to.be(100);
+        assert(__A__ === 1);
+        assert(__B_C__ === '222');
+        assert(__B_D__ === 5);
+        assert(__B_E_F__ === 1);
+        assert(__C_K__ === 100);
     });
 });

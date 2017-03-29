@@ -3,8 +3,8 @@
  * @author Max
  **/
 
-let expect = require('expect.js');
-let PromiseExtension = require('../../dist/utils/promise-extension');
+const assert = require('assert');
+const PromiseExtension = require('../../dist/utils/promise-extension');
 
 describe('utils.action-utils', function () {
     before(function() {
