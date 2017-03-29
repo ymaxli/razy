@@ -68,3 +68,7 @@ basic framework
 
 + change `expect.js` to `power-assert`
 + adjust page render sequence and add a test case
+
+# 0.1.1
+
++ handle render process error and modify setUpPage datas
