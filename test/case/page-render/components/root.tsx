@@ -11,7 +11,7 @@ import { BaseComponent, HTMLManager } from '../../../../dist/lib';
 class Root extends BaseComponent<any, any> {
     async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> { }
     setUpPage(manager: HTMLManager, datas: any[]) {
-        manager.setTag('title', datas[0].title);
+        manager.setTag('title', datas[0].payload.title + datas[1].payload.test);
     }
     getInitDataActionImp(props: any) { 
         return [
@@ -20,6 +20,14 @@ class Root extends BaseComponent<any, any> {
                 payload: new Promise((resolve, reject) => {
                     resolve({
                         title: 'test123'
+                    })
+                })
+            },
+            {
+                type: 'action',
+                payload: new Promise((resolve, reject) => {
+                    resolve({
+                        test: 'test1234'
                     })
                 })
             }
