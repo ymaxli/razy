@@ -76,3 +76,4 @@ basic framework
 # 0.1.2
 
 + add auto detect data inited using reflection
++ make `setUpPage` only execute on server side

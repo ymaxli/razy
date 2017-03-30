@@ -35,11 +35,12 @@ abstract class BaseComponent<P, S> extends React.Component<P & BasePropTypes & D
     }
     /**
      * interceptor for server side control
+     * server side only
      */
     abstract async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any>
     /**
      * implement page initialization stuff,
-     * isomorphic method
+     * server side only
      */
     abstract setUpPage(manager: HTMLManager, datas?: any[]): any
     /**
@@ -63,12 +64,7 @@ abstract class BaseComponent<P, S> extends React.Component<P & BasePropTypes & D
         if(!this.props.initedFlag[getClassName(this)]) actions = this.getInitDataAction(this.props);
         if(actions) {
             Promise.all(actions.map(item => dispatch(item)))
-                .then((datas: any[]) => {
-                    this.setUpPage(htmlManager, datas);
-                })
                 .catch(err => console.error(err));
-        } else {
-            this.setUpPage(htmlManager);
         }
     }
 }
