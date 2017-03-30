@@ -18,6 +18,7 @@ import { getDeviceVars, DeviceVars } from '../utils/device-detect';
 import { exportConfigToGlobalConst } from './utils';
 import { INITIAL_DATA_NAMESPACE } from '../../const';
 import { notEmptyValidator } from '../../utils/validator';
+import getClassName from '../../utils/get-classname';
 
 const router = express.Router();
 
@@ -82,11 +83,15 @@ async function render(
     let htmlManager = new HTMLManager();
     let store = generateStore(req.cookies[INITIAL_DATA_NAMESPACE]);
     let initialDataAndSetUpTasks: Promise<any>[] = [];
+    let initedPage: {[key: string]: boolean} = {};
     renderProps.components.forEach((item: { WrappedComponent: any }) => {
         if (item && item.WrappedComponent) {
             let component = new item.WrappedComponent();
             
-            let actions = component.getInitDataAction(renderProps, true);
+            // add data inited flag
+            initedPage[getClassName(component)] = true;
+
+            let actions = component.getInitDataAction(renderProps);
             if(notEmptyValidator(actions)) {
                 initialDataAndSetUpTasks.push(new Promise((resolve, reject) => {
                     Promise.all(actions.map((item: any) => store.dispatch(item)))
@@ -108,12 +113,12 @@ async function render(
     // get deviceVars
     const deviceVars = getDeviceVars(req.headers['user-agent']);
     htmlManager.injectGlobalVar(generateClientGlobalVar(deviceVars, store.getState()));
-
+    
     // render
     let html: string;
     html = ReactDOMServer.renderToString(
         <Provider store={store}>
-            <RouterContext {...renderProps} createElement={getCreateElement(deviceVars)} />
+            <RouterContext {...renderProps} createElement={getCreateElement(deviceVars, initedPage)} />
         </Provider>
     );
     html = htmlManager.getHead() + (html || '') + htmlManager.getFoot();
@@ -153,10 +158,11 @@ function generateClientGlobalVar(deviceVars: DeviceVars, storeState: any) {
     return thisGlobalVars;
 }
 
-function getCreateElement(deviceVars: DeviceVars) {
+function getCreateElement(deviceVars: DeviceVars, initedFlag: {[key: string]: boolean}) {
     return (Component: any, props: any) => {
-        let newProps = props;
+        let newProps = cloneDeep(props);
         Object.assign(newProps, deviceVars);
+        Object.assign(newProps, {initedFlag});
         return React.createElement(Component, newProps);
     };
 }

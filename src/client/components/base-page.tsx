@@ -11,12 +11,16 @@ import HTMLManager from '../../server/bootstrap/html-manager';
 const htmlManager = new HTMLManager();
 import {DeviceVars} from '../../server/utils/device-detect';
 import { Store } from 'redux';
+import getClassName from '../../utils/get-classname';
 
 export interface BasePropTypes {
     dispatch: Function,
     params: any,
     location: {
         search: string
+    },
+    initedFlag: {
+        [key: string]: boolean
     }
 }
 
@@ -43,11 +47,9 @@ abstract class BaseComponent<P, S> extends React.Component<P & BasePropTypes & D
      * isomorphic method
      */
     abstract getInitDataActionImp(props: any): void | any[]
-    getInitDataAction(props: any, force = false): any[] {
-        if(force || !props.dataInited) {
-            let actions = this.getInitDataActionImp(props);
-            if(isAnyArray(actions)) return actions;
-        }
+    getInitDataAction(props: any): any[] {
+        let actions = this.getInitDataActionImp(props);
+        if(isAnyArray(actions)) return actions;
         return null;
     }
     componentDidMount() {
@@ -57,7 +59,8 @@ abstract class BaseComponent<P, S> extends React.Component<P & BasePropTypes & D
         });
 
         const {dispatch} = this.props;
-        let actions = this.getInitDataAction(this.props);
+        let actions;
+        if(!this.props.initedFlag[getClassName(this)]) actions = this.getInitDataAction(this.props);
         if(actions) {
             Promise.all(actions.map(item => dispatch(item)))
                 .then((datas: any[]) => {

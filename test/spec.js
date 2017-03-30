@@ -12,3 +12,4 @@ require('./case/server.utils.json-result');
 require('./case/utils.action-utils');
 require('./case/utils.validator');
 require('./case/utils.promise-extension');
+require('./case/utils.get-classname');
