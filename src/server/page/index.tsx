@@ -112,7 +112,7 @@ async function render(
 
     // get deviceVars
     const deviceVars = getDeviceVars(req.headers['user-agent']);
-    htmlManager.injectGlobalVar(generateClientGlobalVar(deviceVars, store.getState()));
+    htmlManager.injectGlobalVar(generateClientGlobalVar(deviceVars, store.getState(), initedPage));
     
     // render
     let html: string;
@@ -151,10 +151,11 @@ function generateStore(initialDataFromClient: any) {
     return createStore(APP, initialStateImmutable);
 }
 
-function generateClientGlobalVar(deviceVars: DeviceVars, storeState: any) {
+function generateClientGlobalVar(deviceVars: DeviceVars, storeState: any, initedFlag: {[key: string]: boolean}) {
     let thisGlobalVars: any = cloneDeep(configJS);
     Object.assign(thisGlobalVars, deviceVars);
     thisGlobalVars.__INITIAL_STATE__ = encodeURIComponent(JSON.stringify(storeState));
+    thisGlobalVars.__INITED_FLAG__ = encodeURIComponent(JSON.stringify(initedFlag));
     return thisGlobalVars;
 }
 
