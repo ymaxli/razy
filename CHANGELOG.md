@@ -72,3 +72,7 @@ basic framework
 # 0.1.1
 
 + handle render process error and modify setUpPage datas
+
+# 0.1.2
+
++ add auto detect data inited using reflection
