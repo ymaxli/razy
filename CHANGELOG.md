@@ -77,3 +77,11 @@ basic framework
 
 + add auto detect data inited using reflection
 + make `setUpPage` only execute on server side
+
+# 0.1.3
+
++ fix `request.get` `request.post` params optional bug
+
+# 0.2.0
+
++ make `env-detect` isomorphic

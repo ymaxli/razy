@@ -36,7 +36,7 @@ abstract class REQUEST {
     }
     protected abstract getPromise(url: string, raw?: boolean): Promise<any>
     protected abstract postPromise(url: string, content: any, options?: any, raw?: boolean): Promise<any>
-    get(url: string, raw: boolean) {
+    get(url: string, raw?: boolean) {
         const urlObj = URL.parse(encodeURI(url));
         let query = '';
         for(let i in this.params) {
@@ -52,7 +52,7 @@ abstract class REQUEST {
     getStub(url: string) {
         return this.getPromise(this.urlStubFilter(encodeURI(url)));
     }
-    post(url: string, content: any, options: any, raw: boolean) {
+    post(url: string, content: any, options?: any, raw?: boolean) {
         for(let i in this.params) {
             content[i] = this.params[i];
         }
