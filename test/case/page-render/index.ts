@@ -22,7 +22,7 @@ describe('page-render', function () {
                 assert(data.indexOf('<title>test123test1234</title>') !== -1)
             });
     });
-    it('inject client global initedFlag', function() {
+    it('inject client global initedFlag', function () {
         return httpGet(`${PATH}`, true)
             .then((data: string) => {
                 assert(data.indexOf('var __INITED_FLAG__ = \'%7B%22Root%22%3Atrue%7D\'') !== -1);
@@ -32,6 +32,12 @@ describe('page-render', function () {
         return httpGet(`${PATH}/test1`, true)
             .then((data: string) => {
                 assert(data === 'Found. Redirecting to /')
+            });
+    });
+    it('env-detect // __NODE_ENV__ injected by test commands', function () {
+        return httpGet(`${PATH}`, true)
+            .then((data: string) => {
+                assert(data.indexOf('var __NODE_ENV__ = \'dev\'') !== -1);
             });
     });
 });

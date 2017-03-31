@@ -156,6 +156,7 @@ function generateClientGlobalVar(deviceVars: DeviceVars, storeState: any, inited
     Object.assign(thisGlobalVars, deviceVars);
     thisGlobalVars.__INITIAL_STATE__ = encodeURIComponent(JSON.stringify(storeState));
     thisGlobalVars.__INITED_FLAG__ = encodeURIComponent(JSON.stringify(initedFlag));
+    thisGlobalVars.__NODE_ENV__ = process.env.NODE_ENV;
     return thisGlobalVars;
 }
 

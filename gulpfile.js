@@ -61,7 +61,7 @@ gulp.task('test', ['compile ts dev', 'compile tests in ts'], function (done) {
     });
 });
 gulp.task('cov', [], function (done) {
-    exec('istanbul cover node_modules/.bin/_mocha test/spec.js', function (err, stdout, stderr) {
+    exec('NODE_ENV=dev istanbul cover node_modules/.bin/_mocha test/spec.js', function (err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
 

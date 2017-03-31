@@ -28,3 +28,4 @@ declare const __STUB_SERVER_HTTP_HOSTNAME__: string;
 declare const __STUB_SERVER_HTTP_PORT__: string;
 declare const __PAGE_SERVER_HOST__: string;
 declare const __PAGE_SERVER_PORT__: string;
+declare const __NODE_ENV__: string;

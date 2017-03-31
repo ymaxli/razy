@@ -8,7 +8,7 @@
   },
   "typings": "dist/index.d.ts",
   "scripts": {
-    "test": "mocha -r intelli-espower-loader test/spec.js && mocha -r intelli-espower-loader dist-test/case/page-render/index.js"
+    "test": "NODE_ENV=dev mocha -r intelli-espower-loader test/spec.js && NODE_ENV=dev mocha -r intelli-espower-loader dist-test/case/page-render/index.js"
   },
   "repository": {
     "type": "git",

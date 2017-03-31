@@ -174,6 +174,8 @@ describe('server.bootstrap.html-manager', function() {
         } catch(e) {
             assert(false, 'failed');
         }
+
+        global.window = undefined;
     });
 });
 

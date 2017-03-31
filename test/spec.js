@@ -13,3 +13,4 @@ require('./case/utils.action-utils');
 require('./case/utils.validator');
 require('./case/utils.promise-extension');
 require('./case/utils.get-classname');
+require('./case/server.utils.env-detect');
