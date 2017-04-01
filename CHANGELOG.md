@@ -85,3 +85,9 @@ basic framework
 # 0.2.0
 
 + make `env-detect` isomorphic
++ add `entry`
++ split lib files to reduce bundle size
+
+## Breaking Changes
++ change `import {} from 'razy/dist/lib'` to `import {} from 'razy/dist/lib/base-component'`, ie import file independently
+
