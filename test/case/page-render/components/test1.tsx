@@ -6,7 +6,8 @@
 import * as _expressStatic from 'express-serve-static-core';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { BaseComponent, HTMLManager } from '../../../../dist/lib';
+import BaseComponent from '../../../../dist/lib/base-component';
+import HTMLManager from '../../../../dist/lib/html-manager';
 
 class Test1 extends BaseComponent<any, any> {
     async interceptor(req: _expressStatic.Request, res: _expressStatic.Response, next: _expressStatic.NextFunction): Promise<any> { 

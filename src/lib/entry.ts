@@ -1,0 +1,1 @@
+export {setUp as entrySetUp} from '../client/entry';
