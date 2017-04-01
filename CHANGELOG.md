@@ -91,3 +91,6 @@ basic framework
 ## Breaking Changes
 + change `import {} from 'razy/dist/lib'` to `import {} from 'razy/dist/lib/base-component'`, ie import file independently
 
+# 0.2.1
+
++ add `render` method to `entry` to make entry start process more flexible
