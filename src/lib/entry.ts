@@ -1,1 +1,1 @@
-export {setUp as entrySetUp} from '../client/entry';
+export {setUp as entrySetUp, render} from '../client/entry';
