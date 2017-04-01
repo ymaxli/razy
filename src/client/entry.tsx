@@ -10,27 +10,22 @@ import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { match, Router, browserHistory } from 'react-router';
 import * as Immutable from 'immutable';
-import {default as retinaSetUp, ret} from '../utils/retina';
-import {default as getRequestMethod} from '../utils/iso-request';
-import {default as Storage} from '../utils/storage';
-import {DeviceVars} from '../server/utils/device-detect';
-import {extend as promiseExtend} from '../utils/promise-extension';
-
-promiseExtend();
-retinaSetUp();
-window.ret = ret;
-window._storage = Storage;
+import { default as retinaSetUp, ret } from '../utils/retina';
+import { default as getRequestMethod } from '../utils/iso-request';
+import { default as Storage } from '../utils/storage';
+import { DeviceVars } from '../server/utils/device-detect';
+import { extend as promiseExtend } from '../utils/promise-extension';
 
 export interface ParamsInterface {
     devTools: any
     dataFlagResolver?: DataFlagResolver
-    reducerRoot: any
     routes: any
     APP: any
     createStore: any
 }
 
-let routes, APP, finalCreateStore, devTools;
+let routes: any, APP, finalCreateStore, devTools, store: any, createElement: any;
+let isSetUp = false;
 
 export function setUp(params: ParamsInterface) {
     routes = params.routes;
@@ -42,6 +37,11 @@ export function setUp(params: ParamsInterface) {
     window._http = requestMothods.http;
     window._https = requestMothods.https;
 
+    promiseExtend();
+    retinaSetUp();
+    window.ret = ret;
+    window._storage = Storage;
+
     let initialState = JSON.parse(decodeURIComponent(__INITIAL_STATE__));
     for (let i in initialState) {
         initialState[i] = Immutable.fromJS(initialState[i]);
@@ -49,7 +49,7 @@ export function setUp(params: ParamsInterface) {
 
     const initedFlag = JSON.parse(decodeURIComponent(__INITED_FLAG__));
 
-    const store = finalCreateStore(APP, initialState);
+    store = finalCreateStore(APP, initialState);
 
     let customProps: any = {
         devTools
@@ -63,11 +63,17 @@ export function setUp(params: ParamsInterface) {
     Object.assign(customProps, deviceVars);
     Object.assign(customProps, { initedFlag });
 
-    const createElement = (Component: any, props: any) => {
+    createElement = (Component: any, props: any) => {
         let newProps = props;
         Object.assign(newProps, customProps);
         return React.createElement(Component, newProps);
     };
+
+    isSetUp = true;
+}
+
+export function render() {
+    if (!isSetUp) throw new Error('please call setUp method first!');
 
     match({ history: browserHistory, routes }, (error, redirectLocation, renderProps) => {
         ReactDOM.render((
