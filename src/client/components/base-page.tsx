@@ -21,7 +21,8 @@ export interface BasePropTypes {
     },
     initedFlag: {
         [key: string]: boolean
-    }
+    },
+    devTools: any
 }
 
 export interface BaseStateTypes {

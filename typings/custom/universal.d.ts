@@ -3,6 +3,17 @@ declare module NodeJS {
         [key: string]: any
     }
 }
+interface Window {
+    [key: string]: any
+}
+
+declare const __INITIAL_STATE__: string;
+declare const __INITED_FLAG__: string;
+
+declare const device_mobile: boolean;
+declare const device_phone: boolean;
+declare const device_tablet: boolean;
+declare const device_os: string;
 
 declare const _importLess: ImportLess;
 declare const _http: REQUEST;
