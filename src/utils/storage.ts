@@ -26,8 +26,8 @@ export default {
 
         Cookies.set(INITIAL_DATA_NAMESPACE, JSON.stringify(initialDataObj), { expires: 7, path: '/' });
     },
-    ['set'](key: string, obj: any) {
-        Cookies.set(key, obj, { expires: 7, path: '/' });
+    ['set'](key: string, obj: any, options?: any) {
+        Cookies.set(key, obj, options || { expires: 7, path: '/' });
     },
     ['get'](key: string) {
         return Cookies.get(key);
