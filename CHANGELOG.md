@@ -89,8 +89,18 @@ basic framework
 + split lib files to reduce bundle size
 
 ## Breaking Changes
+
 + change `import {} from 'razy/dist/lib'` to `import {} from 'razy/dist/lib/base-component'`, ie import file independently
 
 # 0.2.1
 
 + add `render` method to `entry` to make entry start process more flexible
+
+# 0.2.2
+
++ modify `storage` interface
+
+# 0.2.3
+
++ change `http` deps to `request` module
++ add tests for `http`
