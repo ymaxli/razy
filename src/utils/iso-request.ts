@@ -3,14 +3,14 @@
  * @author Max
  */
 
-import {default as REQUEST, DataFlagResolver} from './request';
+import { default as REQUEST, DataFlagResolver } from './request';
 
 export default function getRequestMethod(dataFlagResolver?: DataFlagResolver): {
     http: REQUEST,
     https: REQUEST
 } {
-    if(typeof window === 'undefined') {
-        const {initHTTP, initHTTPS} = require('./http');
+    if (typeof window === 'undefined') {
+        const { initHTTP, initHTTPS } = require('./http');
         return {
             http: initHTTP({
                 hostname: __API_SERVER_HTTP_HOSTNAME__,
@@ -26,7 +26,7 @@ export default function getRequestMethod(dataFlagResolver?: DataFlagResolver): {
             }, dataFlagResolver)
         }
     } else {
-        const {initFetch} = require('./fetch');
+        const { initFetch } = require('./fetch');
         const fetch = initFetch({
             hostname: __API_SERVER_FETCH_HOSTNAME__,
             port: __API_SERVER_FETCH_PORT__,

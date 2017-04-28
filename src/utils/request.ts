@@ -9,7 +9,7 @@
 import * as URL from 'url';
 export interface DataFlagResolver {
     (obj: any, resolve: Function, reject: Function): void
-} 
+}
 export interface RequestParam {
     hostname: string,
     port: string,
@@ -21,10 +21,8 @@ abstract class REQUEST {
     protected port: string
     protected stubHostname: string
     protected stubPort: string
-    protected protocol: string
     protected params: any
-    private dataFlagResolver: DataFlagResolver
-    constructor(param: RequestParam, protocol: string, dataFlagResolver?: DataFlagResolver) {
+    constructor(param: RequestParam, protected protocol: string, private dataFlagResolver?: DataFlagResolver) {
         this.hostname = param.hostname;
         this.port = param.port;
         this.stubHostname = param.stubHostname;
@@ -39,11 +37,11 @@ abstract class REQUEST {
     get(url: string, raw?: boolean) {
         const urlObj = URL.parse(encodeURI(url));
         let query = '';
-        for(let i in this.params) {
+        for (let i in this.params) {
             query += `${i}=${this.params[i]}&`;
         }
         query = query.substr(0, query.length - 1);
-        if(query !== '') {
+        if (query !== '') {
             urlObj.search = urlObj.search ? `${urlObj.search}&${query}` : `?${query}`;
         }
 
@@ -53,7 +51,7 @@ abstract class REQUEST {
         return this.getPromise(this.urlStubFilter(encodeURI(url)));
     }
     post(url: string, content: any, options?: any, raw?: boolean) {
-        for(let i in this.params) {
+        for (let i in this.params) {
             content[i] = this.params[i];
         }
 
@@ -68,7 +66,7 @@ abstract class REQUEST {
     private urlFilter(url: string) {
         let result = url;
         const urlObj = URL.parse(url);
-        if(urlObj.hostname === null && urlObj.port === null) {
+        if (urlObj.hostname === null && urlObj.port === null) {
             urlObj.hostname = this.hostname;
             urlObj.port = this.port;
             urlObj.protocol = this.protocol;
@@ -83,7 +81,7 @@ abstract class REQUEST {
         let result = url;
         const urlObj = URL.parse(url);
 
-        if(urlObj.hostname === null && urlObj.port === null) {
+        if (urlObj.hostname === null && urlObj.port === null) {
             urlObj.hostname = this.stubHostname;
             urlObj.port = this.stubPort;
             urlObj.protocol = this.protocol;
@@ -96,10 +94,10 @@ abstract class REQUEST {
         return result;
     }
     protected dataFlag(obj: any, resolve: Function, reject: Function) {
-        if(this.dataFlagResolver) {
+        if (this.dataFlagResolver) {
             this.dataFlagResolver(obj, resolve, reject);
         } else {
-            if(obj.code === 0) {
+            if (obj.code === 0) {
                 resolve(obj.data);
             } else {
                 reject(obj);
