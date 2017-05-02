@@ -1,6 +1,6 @@
 {
   "name": "razy",
-  "version": "0.2.3-rc1",
+  "version": "0.2.3-rc2",
   "description": "a server framework running on Node.js based on React & Express for lazy developers like me :P",
   "main": "dist/index.js",
   "typescript": {

@@ -11,7 +11,7 @@ const assert = require('assert');
 import start from './test-server';
 import { httpGet, httpPost } from './utils/request'
 
-const PATH = 'localhost:9999';
+const PATH = 'localhost:9998';
 describe('page-render', function () {
     before(function () {
         start();
