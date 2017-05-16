@@ -19,7 +19,7 @@ export interface BasePropTypes {
     location: {
         search: string,
         pathname: string,
-        [key: string]: string
+        [key: string]: any
     },
     initedFlag: {
         [key: string]: boolean
