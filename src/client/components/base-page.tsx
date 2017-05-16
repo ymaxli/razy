@@ -9,7 +9,7 @@ import * as Immutable from 'immutable';
 import * as express from 'express';
 import HTMLManager from '../../server/bootstrap/html-manager';
 const htmlManager = new HTMLManager();
-import {DeviceVars} from '../../server/utils/device-detect';
+import { DeviceVars } from '../../server/utils/device-detect';
 import { Store } from 'redux';
 import getClassName from '../../utils/get-classname';
 
@@ -17,7 +17,9 @@ export interface BasePropTypes {
     dispatch: Function,
     params: any,
     location: {
-        search: string
+        search: string,
+        pathname: string,
+        [key: string]: string
     },
     initedFlag: {
         [key: string]: boolean
@@ -51,7 +53,7 @@ abstract class BaseComponent<P, S> extends React.Component<P & BasePropTypes & D
     abstract getInitDataActionImp(props: any): void | any[]
     getInitDataAction(props: any): any[] {
         let actions = this.getInitDataActionImp(props);
-        if(isAnyArray(actions)) return actions;
+        if (isAnyArray(actions)) return actions;
         return null;
     }
     componentDidMount() {
@@ -60,10 +62,10 @@ abstract class BaseComponent<P, S> extends React.Component<P & BasePropTypes & D
             bodyHeight: window.innerHeight
         });
 
-        const {dispatch} = this.props;
+        const { dispatch } = this.props;
         let actions;
-        if(!this.props.initedFlag[getClassName(this)]) actions = this.getInitDataAction(this.props);
-        if(actions) {
+        if (!this.props.initedFlag[getClassName(this)]) actions = this.getInitDataAction(this.props);
+        if (actions) {
             Promise.all(actions.map(item => dispatch(item)))
                 .catch(err => console.error(err));
         }
