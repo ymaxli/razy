@@ -83,16 +83,16 @@ async function render(
     let htmlManager = new HTMLManager();
     let store = generateStore(req.cookies[INITIAL_DATA_NAMESPACE]);
     let initialDataAndSetUpTasks: Promise<any>[] = [];
-    let initedPage: {[key: string]: boolean} = {};
+    let initedPage: { [key: string]: boolean } = {};
     renderProps.components.forEach((item: { WrappedComponent: any }) => {
         if (item && item.WrappedComponent) {
             let component = new item.WrappedComponent();
-            
+
             // add data inited flag
             initedPage[getClassName(component)] = true;
 
             let actions = component.getInitDataAction(renderProps);
-            if(notEmptyValidator(actions)) {
+            if (notEmptyValidator(actions)) {
                 initialDataAndSetUpTasks.push(new Promise((resolve, reject) => {
                     Promise.all(actions.map((item: any) => store.dispatch(item)))
                         .then((datas: any[]) => {
@@ -108,12 +108,17 @@ async function render(
             }
         }
     });
-    await Promise.all(initialDataAndSetUpTasks);
+
+    try {
+        await Promise.all(initialDataAndSetUpTasks);
+    } catch (error) {
+        console.log(error);
+    }
 
     // get deviceVars
     const deviceVars = getDeviceVars(req.headers['user-agent']);
     htmlManager.injectGlobalVar(generateClientGlobalVar(deviceVars, store.getState(), initedPage));
-    
+
     // render
     let html: string;
     html = ReactDOMServer.renderToString(
@@ -151,7 +156,7 @@ function generateStore(initialDataFromClient: any) {
     return createStore(APP, initialStateImmutable);
 }
 
-function generateClientGlobalVar(deviceVars: DeviceVars, storeState: any, initedFlag: {[key: string]: boolean}) {
+function generateClientGlobalVar(deviceVars: DeviceVars, storeState: any, initedFlag: { [key: string]: boolean }) {
     let thisGlobalVars: any = cloneDeep(configJS);
     Object.assign(thisGlobalVars, deviceVars);
     thisGlobalVars.__INITIAL_STATE__ = encodeURIComponent(JSON.stringify(storeState));
@@ -160,11 +165,11 @@ function generateClientGlobalVar(deviceVars: DeviceVars, storeState: any, inited
     return thisGlobalVars;
 }
 
-function getCreateElement(deviceVars: DeviceVars, initedFlag: {[key: string]: boolean}) {
+function getCreateElement(deviceVars: DeviceVars, initedFlag: { [key: string]: boolean }) {
     return (Component: any, props: any) => {
         let newProps = cloneDeep(props);
         Object.assign(newProps, deviceVars);
-        Object.assign(newProps, {initedFlag});
+        Object.assign(newProps, { initedFlag });
         return React.createElement(Component, newProps);
     };
 }
